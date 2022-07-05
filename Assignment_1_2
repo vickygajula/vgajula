@@ -1,0 +1,99 @@
+[root@ip-172-31-23-141 05-services]# kubectl apply -f   kubia-replicaset.yaml
+replicaset.apps/kubia created
+[root@ip-172-31-23-141 05-services]# kubectl get rs
+NAME    DESIRED   CURRENT   READY   AGE
+kubia   3         3         0       5s
+[root@ip-172-31-23-141 05-services]# ls
+external-service-endpoints.yaml     kubia-rc-readinessprobe.yaml               kubia-svc-nodeport.yaml
+external-service-externalname.yaml  kubia-replicaset.yaml                      kubia-svc-publish-not-ready.yaml
+external-service.yaml               kubia-svc-client-ip-session-affinity.yaml  kubia-svc.yaml
+ingress                             kubia-svc-headless.yaml                    tls.cert
+kubia-ingress-tls.yaml              kubia-svc-loadbalancer.yaml                tls.key
+kubia-ingress.yaml                  kubia-svc-named-ports.yaml
+kubia-pod.yml                       kubia-svc-nodeport-onlylocal.yaml
+[root@ip-172-31-23-141 05-services]# cat kubia-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubia2
+spec:
+  clusterIP: 10.99.10.99
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: kubia
+
+[root@ip-172-31-23-141 05-services]# kubectl apply -f kubia-svc.yaml
+service/kubia2 created
+[root@ip-172-31-23-141 05-services]# kubectl get svc
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP   3d6h
+kubia2       ClusterIP   10.99.10.99   <none>        80/TCP    8s
+[root@ip-172-31-23-141 05-services]# kubectl get svc
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP   3d6h
+kubia2       ClusterIP   10.99.10.99   <none>        80/TCP    14s
+[root@ip-172-31-23-141 05-services]# kubectl get svc -o wide
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE    SELECTOR
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP   3d6h   <none>
+kubia2       ClusterIP   10.99.10.99   <none>        80/TCP    69s    app=kubia
+[root@ip-172-31-23-141 05-services]# curl 10.99.10.99:80
+You've hit kubia-8l4d8
+[root@ip-172-31-23-141 05-services]# kubectl get ep
+NAME         ENDPOINTS                                                        AGE
+kubernetes   172.31.23.141:6443                                               3d6h
+kubia2       192.168.200.174:8080,192.168.200.175:8080,192.168.200.176:8080   2m11s
+[root@ip-172-31-23-141 05-services]# kubectl label po kubia-xsz77 app=anil --overwrite
+Error from server (NotFound): pods "kubia-xsz77" not found
+[root@ip-172-31-23-141 05-services]# kubectl label po kubia2  app=anil --overwrite
+Error from server (NotFound): pods "kubia2" not found
+[root@ip-172-31-23-141 05-services]# kubectl get po
+NAME          READY   STATUS    RESTARTS   AGE
+kubia-8l4d8   1/1     Running   0          7m2s
+kubia-ffjtl   1/1     Running   0          7m2s
+kubia-q29tf   1/1     Running   0          7m2s
+[root@ip-172-31-23-141 05-services]# kubectl label po kubia-8l4d8  app=anil --overwrite
+pod/kubia-8l4d8 labeled
+[root@ip-172-31-23-141 05-services]# kubectl get svc
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP   3d6h
+kubia2       ClusterIP   10.99.10.99   <none>        80/TCP    4m31s
+[root@ip-172-31-23-141 05-services]# kubectl label po kubia-ffjtl   app=anil1 --overwrite
+pod/kubia-ffjtl labeled
+[root@ip-172-31-23-141 05-services]# kubectl label po kubia-q29tf   app=anil2 --overwrite
+pod/kubia-q29tf labeled
+[root@ip-172-31-23-141 05-services]# kubectl get po
+NAME          READY   STATUS              RESTARTS   AGE
+kubia-8l4d8   1/1     Running             0          10m
+kubia-dv265   1/1     Running             0          3m2s
+kubia-fcp9x   0/1     ContainerCreating   0          5s
+kubia-ffjtl   1/1     Running             0          10m
+kubia-q29tf   1/1     Running             0          10m
+kubia-rv2c5   1/1     Running             0          16s
+[root@ip-172-31-23-141 05-services]# kubectl get po
+NAME          READY   STATUS              RESTARTS   AGE
+kubia-8l4d8   1/1     Running             0          10m
+kubia-dv265   1/1     Running             0          3m17s
+kubia-fcp9x   0/1     ContainerCreating   0          20s
+kubia-ffjtl   1/1     Running             0          10m
+kubia-q29tf   1/1     Running             0          10m
+kubia-rv2c5   1/1     Running             0          31s
+[root@ip-172-31-23-141 05-services]# kubectl get ep
+NAME         ENDPOINTS                                   AGE
+kubernetes   172.31.23.141:6443                          3d6h
+kubia2       192.168.200.177:8080,192.168.200.178:8080   7m43s
+[root@ip-172-31-23-141 05-services]# kubectl get svc
+NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1     <none>        443/TCP   3d6h
+kubia2       ClusterIP   10.99.10.99   <none>        80/TCP    7m58s
+[root@ip-172-31-23-141 05-services]#
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
