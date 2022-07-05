@@ -1,0 +1,3 @@
+
+Kubernetes Jobs are used to create pods to perform specific duties. 
+CronJobs do the same function but they run specific tasks on a predefined time.
