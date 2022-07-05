@@ -1,0 +1,52 @@
+apiVersion: v1                                                                  |  apiVersion: apps/v1
+  kind: ReplicationController                                                     |  kind: ReplicaSet
+  metadata:                                                                       |  metadata:
+    name: kubia2                                                                  |    name: kubia
+  spec:                                                                           |  spec:
+    replicas: 3                                                                   |    replicas: 3
+    selector:                                                                     |    selector:
+      app: kubia                                                                  |      matchLabels:
+  --------------------------------------------------------------------------------|        app: kubia
+    template:                                                                     |    template:
+      metadata:                                                                   |      metadata:
+        labels:                                                                   |        labels:
+          app: kubia                                                              |          app: kubia
+      spec:                                                                       |      spec:
+        containers:                                                               |        containers:
+        - name: kubia                                                             |        - name: kubia
+          image: luksa/kubia                                                      |          image: luksa/kubia
+          ports:                                                                  |  --------------------------------------------------------------------------------
+          - containerPort: 8080                                                   |  --------------------------------------------------------------------------------
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+~                                                                                 |~
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
