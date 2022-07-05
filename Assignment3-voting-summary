@@ -1,0 +1,19 @@
+bservations:-
+
+1.AFter deleting voting pod , voting was created automatically & voting and results are working porperly.
+2.AFter delteing result pod , result  was created automatically & voting and results are working porperly.
+
+3.After deleting DB pos , DB pod was created automatically .
+we can vote on web page but results are not changing .
+it seems that results are still pointing to old reference DB & waiting for it, hence no change in results .
+
+
+delete the result pod , it will be created automatically & will point to new DB Pod.
+now both voting & results webpage are working 
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
