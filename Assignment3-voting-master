@@ -1,0 +1,225 @@
+[root@ip-172-31-23-141 ~]# cd /root/
+[root@ip-172-31-23-141 ~]#
+[root@ip-172-31-23-141 ~]#
+[root@ip-172-31-23-141 ~]#
+[root@ip-172-31-23-141 ~]# git clone https://github.com/ashishrpandey/example-voting-app
+Cloning into 'example-voting-app'...
+remote: Enumerating objects: 494, done.
+remote: Total 494 (delta 0), reused 0 (delta 0), pack-reused 494
+Receiving objects: 100% (494/494), 236.17 KiB | 926.00 KiB/s, done.
+Resolving deltas: 100% (179/179), done.
+[root@ip-172-31-23-141 ~]# cd /root/example-voting-app/k8s-specifications/
+[root@ip-172-31-23-141 k8s-specifications]# pwd
+/root/example-voting-app/k8s-specifications
+[root@ip-172-31-23-141 k8s-specifications]# kubectl apply -f .
+deployment.apps/db created
+service/db created
+deployment.apps/redis created
+service/redis created
+deployment.apps/result created
+service/result created
+deployment.apps/vote created
+service/vote created
+deployment.apps/worker created
+[root@ip-172-31-23-141 k8s-specifications]# top
+top - 17:24:52 up 7 days,  8:15,  2 users,  load average: 0.41, 0.71, 0.45
+Tasks: 183 total,   1 running, 139 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  9.2 us,  2.7 sy,  0.0 ni, 87.0 id,  0.3 wa,  0.0 hi,  0.3 si,  0.3 st
+KiB Mem :  2019328 total,    96384 free,   891468 used,  1031476 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.  1010120 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
+14338 root      20   0  499652 291936  32564 S  3.0 14.5 108:33.73 kube-apiserver
+14173 root      20   0  212344  66688  24928 S  2.0  3.3  37:12.94 kube-controller
+31372 root      20   0  912108  58368  21148 S  2.0  2.9 179:29.79 kubelet
+ 4191 root      20   0 1500116  75508  24876 S  1.7  3.7  97:13.29 dockerd
+14162 root      20   0   10.1g  70428  14064 S  1.0  3.5  51:02.37 etcd
+18147 root      20   0   48012  30412  19240 S  0.7  1.5  36:08.93 calico-node
+18448 root      20   0  168976   4332   3792 R  0.7  0.2   0:00.28 top
+ 3101 root      20   0  718120   8964   1044 S  0.3  0.4   0:22.46 amazon-ssm-agen
+ 3265 root      20   0  730740  15748   1652 S  0.3  0.8   0:19.60 ssm-agent-worke
+ 7232 root      20   0  145760  19096  11532 S  0.3  0.9  16:20.24 coredns
+14126 root      20   0 1211104  17984   2056 S  0.3  0.9   0:26.59 docker
+17880 root      20   0   10.0g  12640   4420 S  0.3  0.6  11:35.19 etcd
+    1 root      20   0  123912   5184   3220 S  0.0  0.3   4:28.50 systemd
+    2 root      20   0       0      0      0 S  0.0  0.0   0:00.04 kthreadd
+    3 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 rcu_gp
+    4 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 rcu_par_gp
+    6 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 kworker/0:0H-ev
+    9 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 mm_percpu_wq
+   10 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_rude_
+   11 root      20   0       0      0      0 S  0.0  0.0   0:00.00 rcu_tasks_trace
+   12 root      20   0       0      0      0 S  0.0  0.0   1:11.62 ksoftirqd/0
+   13 root      20   0       0      0      0 I  0.0  0.0   1:14.52 rcu_sched
+   14 root      rt   0       0      0      0 S  0.0  0.0   0:01.66 migration/0
+   15 root      20   0       0      0      0 S  0.0  0.0   0:00.00 cpuhp/0
+   17 root      20   0       0      0      0 S  0.0  0.0   0:00.00 kdevtmpfs
+   18 root       0 -20       0      0      0 I  0.0  0.0   0:00.00 netns
+   21 root      20   0       0      0      0 S  0.0  0.0   0:00.26 kauditd
+  261 root      20   0       0      0      0 S  0.0  0.0   0:00.31 khungtaskd
+  262 root      20   0       0      0      0 S  0.0  0.0   0:00.00 oom_reaper
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get all
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/db-b54cd94f4-pthzc        1/1     Running   0          4m31s
+pod/kubia-8l4d8               1/1     Running   0          46m
+pod/kubia-dv265               1/1     Running   0          39m
+pod/kubia-fcp9x               1/1     Running   0          36m
+pod/kubia-ffjtl               1/1     Running   0          46m
+pod/kubia-q29tf               1/1     Running   0          46m
+pod/kubia-rv2c5               1/1     Running   0          36m
+pod/redis-868d64d78-8fdjx     1/1     Running   0          4m31s
+pod/result-5d57b59f4b-6fsg6   1/1     Running   0          4m30s
+pod/vote-94849dc97-bhxq6      1/1     Running   0          4m30s
+pod/worker-dd46d7584-g9xlp    1/1     Running   0          4m30s
+
+NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/db           ClusterIP   10.101.208.55   <none>        5432/TCP         4m31s
+service/kubernetes   ClusterIP   10.96.0.1       <none>        443/TCP          3d7h
+service/kubia2       ClusterIP   10.99.10.99     <none>        80/TCP           43m
+service/redis        ClusterIP   10.97.112.35    <none>        6379/TCP         4m30s
+service/result       NodePort    10.104.62.15    <none>        5001:31001/TCP   4m30s
+service/vote         NodePort    10.99.95.68     <none>        5000:31000/TCP   4m30s
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/db       1/1     1            1           4m31s
+deployment.apps/redis    1/1     1            1           4m31s
+deployment.apps/result   1/1     1            1           4m30s
+deployment.apps/vote     1/1     1            1           4m30s
+deployment.apps/worker   1/1     1            1           4m30s
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/db-b54cd94f4        1         1         1       4m31s
+replicaset.apps/kubia               3         3         3       46m
+replicaset.apps/redis-868d64d78     1         1         1       4m31s
+replicaset.apps/result-5d57b59f4b   1         1         1       4m30s
+replicaset.apps/vote-94849dc97      1         1         1       4m30s
+replicaset.apps/worker-dd46d7584    1         1         1       4m30s
+
+NAME                                            SCHEDULE             SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+cronjob.batch/batch-job-every-fifteen-minutes   0,15,30,45 * * * *   False     0        10m             16m
+[root@ip-172-31-23-141 k8s-specifications]#
+
+
+[root@ip-172-31-23-141 k8s-specifications]# kubectl delete po vote-94849dc97-bhxq6
+pod "vote-94849dc97-bhxq6" deleted
+[root@ip-172-31-23-141 k8s-specifications]# kubectl delete po worker-dd46d7584-g9xlp
+pod "worker-dd46d7584-g9xlp" deleted
+
+
+
+
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get po
+NAME                                               READY   STATUS      RESTARTS   AGE
+batch-job-every-fifteen-minutes-1656955800-mmg9f   0/1     Completed   0          9m40s
+db-b54cd94f4-pthzc                                 1/1     Running     0          18m
+kubia-8l4d8                                        1/1     Running     0          61m
+kubia-dv265                                        1/1     Running     0          53m
+kubia-fcp9x                                        1/1     Running     0          50m
+kubia-ffjtl                                        1/1     Running     0          61m
+kubia-q29tf                                        1/1     Running     0          61m
+kubia-rv2c5                                        1/1     Running     0          50m
+redis-868d64d78-8fdjx                              1/1     Running     0          18m
+result-5d57b59f4b-6fsg6                            1/1     Running     0          18m
+vote-94849dc97-d9rqb                               1/1     Running     0          83s
+worker-dd46d7584-j4vf6                             1/1     Running     0          44s
+[root@ip-172-31-23-141 k8s-specifications]# kubectl delete po db-b54cd94f4-pthzc
+pod "db-b54cd94f4-pthzc" deleted
+
+
+
+
+
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get po
+NAME                                               READY   STATUS      RESTARTS   AGE
+batch-job-every-fifteen-minutes-1656955800-mmg9f   0/1     Completed   0          10m
+db-b54cd94f4-bgr9l                                 1/1     Running     0          39s
+kubia-8l4d8                                        1/1     Running     0          62m
+kubia-dv265                                        1/1     Running     0          54m
+kubia-fcp9x                                        1/1     Running     0          51m
+kubia-ffjtl                                        1/1     Running     0          62m
+kubia-q29tf                                        1/1     Running     0          62m
+kubia-rv2c5                                        1/1     Running     0          51m
+redis-868d64d78-8fdjx                              1/1     Running     0          19m
+result-5d57b59f4b-6fsg6                            1/1     Running     0          19m
+vote-94849dc97-d9rqb                               1/1     Running     0          2m23s
+worker-dd46d7584-j4vf6                             1/1     Running     1          104s
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get po
+NAME                                               READY   STATUS      RESTARTS   AGE
+batch-job-every-fifteen-minutes-1656955800-mmg9f   0/1     Completed   0          11m
+db-b54cd94f4-bgr9l                                 1/1     Running     0          109s
+kubia-8l4d8                                        1/1     Running     0          63m
+kubia-dv265                                        1/1     Running     0          55m
+kubia-fcp9x                                        1/1     Running     0          52m
+kubia-ffjtl                                        1/1     Running     0          63m
+kubia-q29tf                                        1/1     Running     0          63m
+kubia-rv2c5                                        1/1     Running     0          53m
+redis-868d64d78-8fdjx                              1/1     Running     0          20m
+result-5d57b59f4b-6fsg6                            1/1     Running     0          20m
+vote-94849dc97-d9rqb                               1/1     Running     0          3m33s
+worker-dd46d7584-j4vf6                             1/1     Running     1          2m54s
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get po
+NAME                                               READY   STATUS      RESTARTS   AGE
+batch-job-every-fifteen-minutes-1656955800-mmg9f   0/1     Completed   0          16m
+batch-job-every-fifteen-minutes-1656956700-8bp8q   1/1     Running     0          88s
+db-b54cd94f4-bgr9l                                 1/1     Running     0          6m28s
+kubia-8l4d8                                        1/1     Running     0          67m
+kubia-dv265                                        1/1     Running     0          60m
+kubia-fcp9x                                        1/1     Running     0          57m
+kubia-ffjtl                                        1/1     Running     0          67m
+kubia-q29tf                                        1/1     Running     0          67m
+kubia-rv2c5                                        1/1     Running     0          57m
+redis-868d64d78-8fdjx                              1/1     Running     0          25m
+result-5d57b59f4b-6fsg6                            1/1     Running     0          25m
+vote-94849dc97-d9rqb                               1/1     Running     0          8m12s
+worker-dd46d7584-j4vf6                             1/1     Running     1          7m33s
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]# kubectl delete po result-5d57b59f4b-6fsg6
+pod "result-5d57b59f4b-6fsg6" deleted
+
+
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]#
+[root@ip-172-31-23-141 k8s-specifications]# kubectl get po
+NAME                                               READY   STATUS      RESTARTS   AGE
+batch-job-every-fifteen-minutes-1656955800-mmg9f   0/1     Completed   0          30m
+batch-job-every-fifteen-minutes-1656956700-8bp8q   0/1     Completed   0          15m
+batch-job-every-fifteen-minutes-1656957600-s456p   1/1     Running     0          26s
+db-b54cd94f4-bgr9l                                 1/1     Running     0          20m
+kubia-8l4d8                                        1/1     Running     0          81m
+kubia-dv265                                        1/1     Running     0          74m
+kubia-fcp9x                                        1/1     Running     0          71m
+kubia-ffjtl                                        1/1     Running     0          81m
+kubia-q29tf                                        1/1     Running     0          81m
+kubia-rv2c5                                        1/1     Running     0          71m
+redis-868d64d78-8fdjx                              1/1     Running     0          39m
+result-5d57b59f4b-p7n4p                            1/1     Running     0          52s
+vote-94849dc97-d9rqb                               1/1     Running     0          22m
+worker-dd46d7584-j4vf6                             1/1     Running     1          21m
+[root@ip-172-31-23-141 k8s-specifications]#
+
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHu
